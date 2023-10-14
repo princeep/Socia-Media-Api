@@ -27,8 +27,28 @@ const userRegistration = async (req, res) => {
         } catch (error) {
             res.send({ message: "Registration failed" })
         }
-    }
-    
+    } 
 }
 
-module.exports = { userRegistration }
+
+const Login = async(req,res)=>{
+    try{
+        const {email,password} = req.body;
+        if(!email || !password){
+            res.send({message:"Enter required fields"})
+        }
+        const user = await User.findOne({email:email});
+        if(!user){
+            res.send({message:"User not registered"})
+        }
+        const checkPassword = await bcrypt.compare(password,user.password)
+        if((user.email === email)&&checkPassword){
+            const token = await jwt.sign({user},process.env.SECRET_KEY,{expiresIn:"1h"})
+            res.send({message:"Login success",token:token})
+        }
+    } catch(error){
+        console.log(error)
+    }
+}
+
+module.exports = { userRegistration,Login }
