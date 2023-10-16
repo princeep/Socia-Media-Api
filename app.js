@@ -12,7 +12,7 @@ const MONGO_URL = process.env.MONGO_URL;
 
 connectDB(MONGO_URL)
 app.use("/api/user",userRoute)
-
+           
 
 app.get("/",(req,res)=>{
     res.send("Hello, world!");
