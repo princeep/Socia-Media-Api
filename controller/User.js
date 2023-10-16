@@ -23,10 +23,10 @@ const userRegistration = async (req, res) => {
                 email: email,
                 password: hashPassword
             })
-            await newUser.save();
+        const newuser = await newUser.save();
             const save_User = await User.findOne({ email: email })
             const token = jwt.sign({ save_User }, process.env.SECRET_KEY, { expiresIn: '1h' })
-            res.status(201).send({ "status": "success", "message": "Registration Success", "token": token, "user": save_User })
+            res.status(201).send({ "status": "success", "message": "Registration Success", "token": token, "user":newuser})
         } catch (error) {
             res.send({ message: "Registration failed" })
         }
